@@ -21,7 +21,7 @@ class MemberRepositoryTest {
     public void testMember() throws Exception {
         //given: 이런게 주어졌을떄
         Member member = new Member();
-        member.setNickname("memberA");
+//        member.setNickname("memberA");
 
         //when: 이렇게하면 (테스트 하고싶은 내용)
         Long saveId = memberRepository.save(member);
