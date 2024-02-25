@@ -1,38 +1,38 @@
-package site.dayquestion.day_question;
+package site.dayquestion.Member.service;
 
+import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import site.dayquestion.domain.Member;
 import site.dayquestion.Member.repository.MemberRepository;
+import site.dayquestion.domain.Member;
+
 import java.util.List;
 
-
 @SpringBootTest
-class MemberRepositoryTest {
-    @Autowired
-    MemberRepository memRep;
+@Transactional
+class MemberServiceTest {
+    @Autowired MemberService memSer;
+    @Autowired MemberRepository memRep;
+    @Autowired EntityManager em;
 
     @Test
-    @Transactional
-    public void 회원가입_및_찾기_테스트(){
+    void 회원프로필수정테스트() {
         Member member = Member.builder()
                 .nickname("멤버1")
                 .email("wedwedw@wer3.com")
                 .password("1234").build();
-
         Long saveId = memRep.save(member);
-        Member findMember = memRep.findMemberById(saveId);
 
-        Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());
-        Assertions.assertThat(findMember.getNickname()).isEqualTo(member.getNickname());
+        Member newMem = memSer.update(member.getId(), "닉네임2", "소개소개", "패스워드22", "프로필이미지222");
+        String newNickname = memSer.findOne(saveId).getNickname();
+        Assertions.assertThat(newNickname).isEqualTo(newMem.getNickname());
 
     }
     @Test
-    @Transactional
-    public void 랜덤회원3명_찾기_테스트(){
+    void 회원다건조회테스트() {
         Member member1 = Member.builder()
                 .nickname("멤버1")
                 .email("wedwedw@wer3.com")
@@ -53,17 +53,21 @@ class MemberRepositoryTest {
                 .nickname("멤버5")
                 .email("wedwedw@wer3.com")
                 .password("1234").build();
-        memRep.save(member1);
-        memRep.save(member2);
-        memRep.save(member3);
-        memRep.save(member4);
-        memRep.save(member5);
+        memSer.join(member1);
+        memSer.join(member2);
+        memSer.join(member3);
+        memSer.join(member4);
+        memSer.join(member5);
 
-        List<Member> memberList = memRep.findMemberList(3);
+        List<Member> memberList = memSer.findMemList(3);
         for (int i = 0; i < memberList.size(); i++) {
             System.out.println(memberList.get(i).getNickname());
         }
-
     }
-
+    @Test
+    public void 프로필업데이트_테스트(){
+        Member member = memSer.findOne(1L);
+        memSer.update(member.getId(), "닉네임", "자기소개", "패스워드", "String newProfileImageUrl");
+        Assertions.assertThat(member.getProfileImageUrl()).isEqualTo("String newProfileImageUrl");
+    }
 }
