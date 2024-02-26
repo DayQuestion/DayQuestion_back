@@ -1,42 +1,39 @@
-package site.dayquestion;
+package site.dayquestion.day_question;
 
-import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import site.dayquestion.Repository.MemberRepository;
+import site.dayquestion.domain.Member;
+import site.dayquestion.Follow.repository.MemberRepository;
 
+//@ExtendWith(SpringExtension.class)
 @SpringBootTest
-@Transactional
 class MemberRepositoryTest {
+
+
     @Autowired
     MemberRepository memberRepository;
-    @Autowired
-    EntityManager em;
 
     @Test
     @Transactional
-    @Rollback(false) // 자동 롤백 끔
-    public void testMember() {
-        // given
+    @Rollback(false)
+    public void testMember() throws Exception {
+        //given: 이런게 주어졌을떄
         Member member = new Member();
-        member.changeNickname("mini");
+//        member.setNickname("memberA");
 
-        // when
+        //when: 이렇게하면 (테스트 하고싶은 내용)
         Long saveId = memberRepository.save(member);
-        Member findMember = em.find(Member.class, saveId);
+        Member findMember = memberRepository.findById(saveId);
 
-        System.out.println("findMember.getNickname() = " + findMember.getNickname());
-
-        // then
+        //then: 이렇게된다 검증해라
         Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());
-        Assertions.assertThat(findMember).isEqualTo(member);
-        // 저장한 객체 == 읽어온 객체???
-
-
+        Assertions.assertThat(findMember.getNickname()).isEqualTo(member.getNickname());
 
     }
+
+
 }

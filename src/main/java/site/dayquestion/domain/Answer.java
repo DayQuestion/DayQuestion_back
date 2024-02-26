@@ -1,4 +1,4 @@
-package site.dayquestion;
+package site.dayquestion.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,9 +8,9 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
-public class Answer {
-    @Id
-    @GeneratedValue
+public class Answer extends BaseEntity{
+
+    @Id @GeneratedValue
     @Column(name = "answer_id")
     private Long id;
 
@@ -26,14 +26,7 @@ public class Answer {
 
     @Enumerated(EnumType.STRING)
     private PublicStatus publicStatus;
+    private LocalDate createYMD;
 
-    private LocalDate createdYMD;
-
-    public void changeContent(String newContent) {
-        this.content = newContent;
-    }
-
-    public void changePublicStatus (PublicStatus newPS) {
-        this.publicStatus = newPS;
-    }
+    //업데이트 날짜는 BaseEntity로 연결합니다.
 }
