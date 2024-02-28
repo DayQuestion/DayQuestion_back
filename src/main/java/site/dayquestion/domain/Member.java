@@ -1,16 +1,14 @@
 package site.dayquestion.domain;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import site.dayquestion.Enum.LoginType;
-import java.time.LocalDateTime;
 
 import static site.dayquestion.Enum.LoginType.NORMAL;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SuperBuilder
+@Builder
 @AllArgsConstructor
 public class Member extends BaseEntity{
     @Id @GeneratedValue
@@ -32,9 +30,6 @@ public class Member extends BaseEntity{
         this.introduce = newIntroduce;
         this.password = newPassword;
         this.profileImageUrl = newProfileImageUrl;
-        this.setUpdatedAt(LocalDateTime.now());
-        this.setStatus(this.getStatus());
-        this.setCreatedAt(this.getCreatedAt());
     }
 
 }
