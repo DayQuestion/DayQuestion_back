@@ -2,8 +2,8 @@ package site.dayquestion.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Getter;
 import site.dayquestion.Enum.PublicStatus;
-
 import java.time.LocalDate;
 
 @Entity
@@ -33,7 +33,6 @@ public class Answer extends BaseEntity{
     public void changeContent(String content) {
         this.content = content;
     }
-//    private LocalDate createYMD;
 
     //업데이트 날짜는 BaseEntity로 연결합니다.
 }

@@ -1,6 +1,5 @@
 package site.dayquestion.domain;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -9,6 +8,11 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+
 import site.dayquestion.Enum.Status;
 
 import java.time.LocalDateTime;
@@ -28,16 +32,7 @@ public class BaseEntity {
     @ColumnDefault("ACTIVE") // 쿼리 매핑 시점에 설정됨
     private Status status;
 
-//    @PrePersist
-//    public void prePersist() {
-//        // 기본값을 설정합니다.
-//        if (status == null) {
-//            this.status = Status.ACTIVE;
-//        }
-//    }
-
     public void changeStatus(Status status) {
         this.status = status;
     }
-
 }
