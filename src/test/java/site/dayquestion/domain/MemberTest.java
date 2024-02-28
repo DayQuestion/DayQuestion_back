@@ -2,10 +2,12 @@ package site.dayquestion.domain;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.annotation.Rollback;
 import site.dayquestion.Enum.Status;
 
 import static site.dayquestion.Enum.Status.ACTIVE;
 
+@Rollback(value = false)
 class MemberTest {
 
     @Test

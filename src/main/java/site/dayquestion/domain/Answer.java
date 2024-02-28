@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import site.dayquestion.Enum.PublicStatus;
 
-import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -26,7 +25,6 @@ public class Answer extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     private PublicStatus publicStatus;
-    private LocalDate createYMD;
 
     //업데이트 날짜는 BaseEntity로 연결합니다.
 }

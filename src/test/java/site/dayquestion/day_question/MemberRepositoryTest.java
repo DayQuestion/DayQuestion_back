@@ -12,8 +12,7 @@ import java.util.List;
 
 @SpringBootTest
 class MemberRepositoryTest {
-    @Autowired
-    MemberRepository memRep;
+    @Autowired MemberRepository memRep;
 
     @Test
     @Transactional
@@ -24,7 +23,7 @@ class MemberRepositoryTest {
                 .password("1234").build();
 
         Long saveId = memRep.save(member);
-        Member findMember = memRep.findMemberById(saveId);
+        Member findMember = memRep.findById(saveId);
 
         Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());
         Assertions.assertThat(findMember.getNickname()).isEqualTo(member.getNickname());
@@ -59,7 +58,7 @@ class MemberRepositoryTest {
         memRep.save(member4);
         memRep.save(member5);
 
-        List<Member> memberList = memRep.findMemberList(3);
+        List<Member> memberList = memRep.findList(3);
         for (int i = 0; i < memberList.size(); i++) {
             System.out.println(memberList.get(i).getNickname());
         }

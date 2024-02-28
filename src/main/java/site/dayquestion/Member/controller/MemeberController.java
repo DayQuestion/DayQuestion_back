@@ -14,19 +14,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class MmeberController {
+public class MemeberController {
     private final MemberService memSer;
-
-    @PostMapping("/api/auth/register")
-    public CreateMemberResponse joinMember(@RequestBody CreateMemberRequest request){
-        Member member = Member.builder()
-                .email(request.email)
-                .password(request.password)
-                .nickname(request.nickname)
-                .build();
-        Long id = memSer.join(member);
-        return new CreateMemberResponse(id);
-    }
 
     @PutMapping("/api/members/my-info")
     public UpdateMemberResponse updateMember(@RequestBody UpdateMemberRequest request){

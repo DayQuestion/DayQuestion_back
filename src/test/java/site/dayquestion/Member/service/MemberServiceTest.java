@@ -5,17 +5,23 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import site.dayquestion.Member.repository.MemberRepository;
+import site.dayquestion.Auth.AuthService;
+import site.dayquestion.Auth.DTO.MemberReqDto;
 import site.dayquestion.domain.Member;
 
 import java.util.List;
 
 @SpringBootTest
 @Transactional
+@Rollback(value = false)
 class MemberServiceTest {
     @Autowired MemberService memSer;
-    @Autowired MemberRepository memRep;
+    @Autowired
+    AuthService authSer;
+    @Autowired MemberRepository memRepo;
     @Autowired EntityManager em;
 
     @Test
@@ -24,7 +30,7 @@ class MemberServiceTest {
                 .nickname("멤버1")
                 .email("wedwedw@wer3.com")
                 .password("1234").build();
-        Long saveId = memRep.save(member);
+        Long saveId = memRepo.save(member);
 
         Member newMem = memSer.update(member.getId(), "닉네임2", "소개소개", "패스워드22", "프로필이미지222");
         String newNickname = memSer.findOne(saveId).getNickname();
@@ -33,31 +39,27 @@ class MemberServiceTest {
     }
     @Test
     void 회원다건조회테스트() {
-        Member member1 = Member.builder()
+        MemberReqDto member1 = MemberReqDto.builder()
                 .nickname("멤버1")
-                .email("wedwedw@wer3.com")
-                .password("1234").build();
-        Member member2 = Member.builder()
+                .email("1111@1.com")
+                .password("1111").build();
+        MemberReqDto member2 = MemberReqDto.builder()
                 .nickname("멤버2")
-                .email("wedwedw@wer3.com")
-                .password("1234").build();
-        Member member3 = Member.builder()
+                .email("2222@2.com")
+                .password("2222").build();
+        MemberReqDto member3 = MemberReqDto.builder()
                 .nickname("멤버3")
-                .email("wedwedw@wer3.com")
-                .password("1234").build();
-        Member member4 = Member.builder()
+                .email("3333@3.com")
+                .password("3333").build();
+        MemberReqDto member4 = MemberReqDto.builder()
                 .nickname("멤버4")
-                .email("wedwedw@wer3.com")
-                .password("1234").build();
-        Member member5 = Member.builder()
-                .nickname("멤버5")
-                .email("wedwedw@wer3.com")
-                .password("1234").build();
-        memSer.join(member1);
-        memSer.join(member2);
-        memSer.join(member3);
-        memSer.join(member4);
-        memSer.join(member5);
+                .email("4444@4.com")
+                .password("4444").build();
+
+        authSer.join(member1);
+        authSer.join(member2);
+        authSer.join(member3);
+        authSer.join(member4);
 
         List<Member> memberList = memSer.findMemList(3);
         for (int i = 0; i < memberList.size(); i++) {
