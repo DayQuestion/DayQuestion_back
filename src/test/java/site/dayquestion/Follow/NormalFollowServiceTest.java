@@ -1,17 +1,12 @@
 package site.dayquestion.Follow;
 
 import jakarta.persistence.EntityManager;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import site.dayquestion.Enum.Status;
 import site.dayquestion.Follow.repository.MemberRepository;
 import site.dayquestion.Follow.service.FollowService;
-import site.dayquestion.domain.Follow;
-import site.dayquestion.domain.Member;
 
 @SpringBootTest
 @Transactional

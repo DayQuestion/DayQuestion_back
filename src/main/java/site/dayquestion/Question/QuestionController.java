@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import site.dayquestion.domain.Question;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 public class QuestionController {
@@ -11,17 +13,30 @@ public class QuestionController {
     @GetMapping("/api/questions")
     public QuestionRequestDto getQuestion (@RequestParam int month, @RequestParam int day) {
 
-        Question question = questionRepository.find(month, day);
-        QuestionRequestDto questionRequestDto = QuestionRequestDto.builder()
-                .questionId(question.getId())
-                .content(question.getContent())
-                .build();
-        return questionRequestDto;
+        Optional<Question> question = questionRepository.findByMonthAndDay(month, day);
+
+        if(question.isPresent()) {
+            QuestionRequestDto questionRequestDto = QuestionRequestDto.builder()
+                    .questionId(question.get().getId())
+                    .content(question.get().getContent())
+                    .build();
+            return questionRequestDto;
+        }
+        return null;
     }
 
     @PostMapping("/admin/questions")
     public Long postQuestion(@RequestBody PostQuestionReqDto postQuestionReqDto) {
-        Long savedId = questionRepository.save(postQuestionReqDto.getMonth(), postQuestionReqDto.getDay(), postQuestionReqDto.getContent());
-        return savedId;
+        int month = postQuestionReqDto.getMonth();
+        int day = postQuestionReqDto.getDay();
+        String content = postQuestionReqDto.getContent();
+
+        Question question = Question.builder()
+                .month(month)
+                .day(day)
+                .content(content)
+                .build();
+        Question savedQuestion = questionRepository.save(question);
+        return savedQuestion.getId();
     }
 }

@@ -5,15 +5,14 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.dayquestion.Enum.Status;
-import site.dayquestion.Follow.repository.FollowJpaRepository;
 import site.dayquestion.Follow.repository.FollowRepository;
 import site.dayquestion.Follow.repository.MemberRepository;
 import site.dayquestion.domain.Follow;
 import site.dayquestion.domain.Member;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Primary
@@ -25,14 +24,14 @@ public class NormalFollowService implements FollowService {
 
     @Override
     public Long insertFollow(Long followerId, Long followingId) {
-        Member followerMember = memberRepository.findById(followerId);
-        Member followingMember = memberRepository.findById(followingId);
+        Optional<Member> followerMember = memberRepository.findById(followerId);
+        Optional<Member> followingMember = memberRepository.findById(followingId);
 
         // validation
-        if (followerMember == null) {
+        if (followerMember.isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 회원입니다.");
         }
-        if (followingMember == null) {
+        if (followingMember.isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 회원에 대한 팔로우 요청입니다.");
         }
         if (followRepository.findByFollowerIdAndFollowingId(followerId, followingId) != null) {
@@ -40,12 +39,12 @@ public class NormalFollowService implements FollowService {
         }
 
         Follow follow = Follow.builder()
-                .follower(followerMember)
-                .following(followingMember).build();
+                .follower(followerMember.get())
+                .following(followingMember.get()).build();
 
-        Long savedFollowId = followRepository.save(follow);
+        Follow savedFollow = followRepository.save(follow);
 
-        return savedFollowId;
+        return savedFollow.getId();
 
     }
 

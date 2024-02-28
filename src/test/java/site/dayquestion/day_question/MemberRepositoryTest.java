@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import site.dayquestion.domain.Member;
 import site.dayquestion.Follow.repository.MemberRepository;
+import site.dayquestion.domain.Member;
+
+import java.util.Optional;
 
 //@ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -26,12 +28,12 @@ class MemberRepositoryTest {
 //        member.setNickname("memberA");
 
         //when: 이렇게하면 (테스트 하고싶은 내용)
-        Long saveId = memberRepository.save(member);
-        Member findMember = memberRepository.findById(saveId);
+        Member savedMember = memberRepository.save(member);
+        Optional<Member> findMember = memberRepository.findById(savedMember.getId());
 
         //then: 이렇게된다 검증해라
-        Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());
-        Assertions.assertThat(findMember.getNickname()).isEqualTo(member.getNickname());
+        Assertions.assertThat(findMember.get().getId()).isEqualTo(member.getId());
+        Assertions.assertThat(findMember.get().getNickname()).isEqualTo(member.getNickname());
 
     }
 

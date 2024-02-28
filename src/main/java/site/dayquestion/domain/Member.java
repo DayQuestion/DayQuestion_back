@@ -9,7 +9,7 @@ import site.dayquestion.Enum.LoginType;
 @Getter
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class Member extends BaseEntity {
 
     @Id @GeneratedValue
