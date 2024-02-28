@@ -1,11 +1,13 @@
 package site.dayquestion.domain;
 
-
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
 public class Follow extends BaseEntity {
 
     @Id @GeneratedValue
@@ -19,4 +21,5 @@ public class Follow extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "following_id")
     private Member following;
+
 }

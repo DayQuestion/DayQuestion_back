@@ -1,24 +1,29 @@
 package site.dayquestion.domain;
 
-
 import jakarta.persistence.*;
+import lombok.*;
 import lombok.Getter;
-import lombok.Setter;
 import site.dayquestion.Enum.LoginType;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class Member extends BaseEntity{
 
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;
-
     private String email;
     private String nickname;
-    private String introduce;
+
+    @Builder.Default
+    private String introduce = "안녕하세요!";
     private String password;
-    private String profileImageUrl;
+
+    @Builder.Default
+    private String profileImageUrl = "https://m.blog.naver.com/gambasg/222132751279?view=img_12";
 
     @Enumerated(EnumType.STRING)
     private LoginType loginType;

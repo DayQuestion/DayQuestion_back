@@ -1,13 +1,16 @@
 package site.dayquestion.domain;
 
 import jakarta.persistence.*;
+import lombok.*;
 import lombok.Getter;
 import site.dayquestion.Enum.PublicStatus;
-
 import java.time.LocalDate;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Answer extends BaseEntity{
 
     @Id @GeneratedValue
@@ -26,7 +29,10 @@ public class Answer extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     private PublicStatus publicStatus;
-    private LocalDate createYMD;
+
+    public void changeContent(String content) {
+        this.content = content;
+    }
 
     //업데이트 날짜는 BaseEntity로 연결합니다.
 }
